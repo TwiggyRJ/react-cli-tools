@@ -1,10 +1,12 @@
 import yargs from 'https://cdn.deno.land/yargs/versions/yargs-v16.2.1-deno/raw/deno.ts';
 import createComponent from "./createComponent.ts";
 import createModule from "./createModule.ts";
+import createReducer from "./createReducer.ts";
 
 enum Create {
   Component = "component",
   Module = "module",
+  Reducer = "reducer",
 }
 
 interface Arguments {
@@ -27,6 +29,10 @@ switch (inputArgs.create) {
 
   case Create.Module:
     createModule(inputArgs.name);
+    break;
+
+  case Create.Reducer:
+    createReducer(inputArgs.name);
     break;
 
   default:

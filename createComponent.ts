@@ -6,7 +6,7 @@ function createComponent(componentName: string) {
   const path = `./${componentName}/`;
   const testsPath = `${path}/__tests__`;
   const componentFileName = `${path}/${componentName}.tsx`;
-  const componentTestFileName = `${testsPath}/${componentName}.spec.ts`;
+  const componentTestFileName = `${testsPath}/${componentName}.spec.tsx`;
 
   ensureDirSync(path);
   ensureDirSync(testsPath);
@@ -30,6 +30,7 @@ export { default } from './${componentName}';
   `;
 
   const componentTestString = `
+import { render } from '@testing-library/react';
 import ${componentName} from '../';
 
 describe('${componentName}', () => {
