@@ -1,0 +1,13 @@
+{
+  "module": {
+    "parent": "Modules",
+    "folders": [
+      "Components",
+      "Lib",
+      "Store",
+      "Screens",
+      "Types",
+      "Hooks"
+    ]
+  }
+}
