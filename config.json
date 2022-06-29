@@ -1,4 +1,8 @@
 {
+  "general" : {
+    "quotes": "double",
+    "testFileName": "test"
+  },
   "module": {
     "parent": "Modules",
     "folders": [

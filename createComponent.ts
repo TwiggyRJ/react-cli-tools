@@ -1,49 +1,31 @@
 import {
   ensureDirSync,
 } from "https://deno.land/std@0.78.0/fs/mod.ts";
+import getQuoteMark from "./lib/getQuoteMark.ts";
+import getTestFileName from "./lib/getTestFileName.ts";
+import readConfig from "./lib/readConfig.ts";
+import { getComponentsTemplate, getTestsTemplate } from "./templates/components/index.ts";
 
-function createComponent(componentName: string) {
+async function createComponent(componentName: string) {
+  const config = await readConfig();
+  const quoteMark = getQuoteMark(config.general.quotes);
+  const testFileName = getTestFileName(config.general.testFileName);
+
   const path = `./${componentName}/`;
   const testsPath = `${path}/__tests__`;
   const componentFileName = `${path}/${componentName}.tsx`;
-  const componentTestFileName = `${testsPath}/${componentName}.spec.tsx`;
+  const componentTestFileName = `${testsPath}/${componentName}.${testFileName}.tsx`;
 
   ensureDirSync(path);
   ensureDirSync(testsPath);
 
-  const componentString = `
-import React from 'react';
+  const componentString = getComponentsTemplate(componentName, quoteMark);
 
-interface Props {};
+  const index = 
+`export { default } from ${quoteMark}./${componentName}${quoteMark};
+`;
 
-const ${componentName}: React.FC<Props> = () => {
-  return (<></>);
-};
-
-export default ${componentName};
-
-  `;
-
-  const index = `
-export { default } from './${componentName}';
-
-  `;
-
-  const componentTestString = `
-import { render } from '@testing-library/react';
-import ${componentName} from '../';
-
-describe('${componentName}', () => {
-  it('renders', () => {
-    render(
-      <${componentName} />
-    );
-
-    expect(true).toBeTruthy();
-  });
-});
-
-  `;
+  const componentTestString = getTestsTemplate(componentName, quoteMark);
 
   const writeComponent = Deno.writeTextFile(componentFileName, componentString);
   writeComponent.then(() => console.log(`Component created at ${componentFileName}`));
